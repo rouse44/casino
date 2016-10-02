@@ -1,0 +1,58 @@
+body{
+
+ background-size: cover;
+background-origin: content-box;
+background-repeat: no-repeat;
+  position: fixed;
+background-image:url(../img/background.png);
+
+}
+@font-face {
+    font-family: Thin; /* Имя шрифта */
+    src: url(../fonts/thin.otf); /* Путь к файлу со шрифтом */
+   }
+   h1 {
+
+
+
+   }
+   .font{
+
+   	font-family: Thin;
+   	font-size: 20px;
+   }
+   .button{
+
+font-family: Thin;
+
+border: 1px solid black;
+padding-top: 1vh;
+padding-left: 2.5vh;
+padding-bottom: 1vh;
+padding-right: 2.5vh;
+
+   }
+   .back{
+
+font-family: Thin;
+
+border: 1px solid black;
+padding-top: 1vh;
+padding-left: 2.5vh;
+padding-bottom: 1vh;
+padding-right: 2.5vh;
+
+   }
+   #balance{
+margin-left: 150vh;
+   }
+   #play{
+position: absolute;
+margin-top:20%;
+background-color: orange;
+opacity: 0.8;
+   }
+   a{
+text-decoration: none;
+color:black;
+   }
