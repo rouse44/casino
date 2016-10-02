@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){ // Аналог $(docu
    var ucolor;
    var utype;
 
+
    // выборка элементов
    var colors=document.getElementById('colors');
    var typech=document.getElementById('typech');
@@ -21,6 +22,50 @@ document.addEventListener('DOMContentLoaded', function(){ // Аналог $(docu
    var chet=document.getElementById('chet');
    var nechet=document.getElementById('nechet');
 var selchislo=document.getElementById('chislo');
+var stavka =document.getElementById('stavka');
+//создание cookies
+function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
+{
+ var cookie_string = name + "=" + escape ( value );
+
+ if ( exp_y )
+ {
+   var expires = new Date ( exp_y, exp_m, exp_d );
+   cookie_string += "; expires=" + expires.toGMTString();
+ }
+
+ if ( path )
+       cookie_string += "; path=" + escape ( path );
+
+ if ( domain )
+       cookie_string += "; domain=" + escape ( domain );
+
+ if ( secure )
+       cookie_string += "; secure";
+
+ document.cookie = cookie_string;
+}
+// функция установки значения баланса
+ function SetScore(param){
+  set_cookie ( "total", param, 2038, 01, 15, "",
+               "casino" );
+
+}
+//получение cookies
+function get_cookie ( cookie_name )
+{
+  var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+
+  if ( results )
+    return ( unescape ( results[2] ) );
+  else
+    return null;
+}
+SetScore(300);
+
+
+var score = get_cookie("total");
+total.innerHTML+=score+'$';
    //обнуление элементов
 function nullparam(){
    ucolor=0;
@@ -54,8 +99,8 @@ selchislo.onfocus=function(){
   selchislo.onchange=function(){
 uchislo=selchislo.value;
 
-
   }
+
 function typeofchislo (chislot){
 chislot= chislot % 2;
   if( chislot == 0 ){
@@ -167,14 +212,14 @@ alert(uchislo);
 
   if(uchislo==chislo && uchislo!=0){
   alert('вы выйграли '+chislo+color);
-nullparam();
-hideEl();
+score=stavka*2;
+SetScore(score);
 location.reload();
   }
   if(uchislo!=chislo && uchislo!=0){
 
   alert('вы не угадали число '+chislo+color);
-
+score=score-
 location.reload();
   }
 
