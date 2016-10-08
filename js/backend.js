@@ -1,11 +1,25 @@
 ﻿
 document.addEventListener('DOMContentLoaded', function(){ // Аналог $(document).ready(function(){
-   var total = document.getElementById('balance');
+
    var ucolor;
    var utype;
+   // устанавливаем счет игрока
 
+   // счет игрока
+   var score = get_cookie("total");
+
+if(score==0){
+  score= -100;
+}
+if (score == null){
+score = 100;
+
+}
 
    // выборка элементов
+var roullinterface = document.getElementById('interface');
+   var rotaterullet = document.getElementById('rotaterullet');
+   var total = document.getElementById('balance');
    var colors=document.getElementById('colors');
    var typech=document.getElementById('typech');
    var number=document.getElementById('number');
@@ -21,75 +35,119 @@ document.addEventListener('DOMContentLoaded', function(){ // Аналог $(docu
    var black=document.getElementById('black');
    var chet=document.getElementById('chet');
    var nechet=document.getElementById('nechet');
-var selchislo=document.getElementById('chislo');
-var stavka =document.getElementById('stavka');
-//создание cookies
-function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
-{
- var cookie_string = name + "=" + escape ( value );
+   var selchislo=document.getElementById('chislo');
+   var znstavki =document.getElementById('znstavki');
+   var stavka =document.getElementById('stavka');
+    var changest =document.getElementById('changest');
+    var createst =document.getElementById('createst');
+    var winorlose =document.getElementById('winorlose');
+    var resrull =document.getElementById('resrull');
+    var money =document.getElementById('money');
+    var rcontinue =document.getElementById('continue');
+    var warning =document.getElementById('warning');
+    var reset =document.getElementById('reset');
 
- if ( exp_y )
- {
-   var expires = new Date ( exp_y, exp_m, exp_d );
-   cookie_string += "; expires=" + expires.toGMTString();
- }
 
- if ( path )
-       cookie_string += "; path=" + escape ( path );
-
- if ( domain )
-       cookie_string += "; domain=" + escape ( domain );
-
- if ( secure )
-       cookie_string += "; secure";
-
- document.cookie = cookie_string;
-}
-// функция установки значения баланса
- function SetScore(param){
-  set_cookie ( "total", param, 2038, 01, 15, "",
-               "casino" );
+//скрываем рулетку
+reset.onclick=function(){
+  DelScore();
+  location.reload();
 
 }
-//получение cookies
-function get_cookie ( cookie_name )
-{
-  var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
 
-  if ( results )
-    return ( unescape ( results[2] ) );
+rcontinue.onclick=function () {
+  location.reload();
+
+}
+
+changest.onclick=function () {
+  location.reload();
+
+}
+znstavki.oninput=function(){
+  razmst=znstavki.value;
+  createst.style.display="inline";
+  if(isNaN(razmst)){
+  alert("вы ввели не цифру");
+  znstavki.value="";
+    createst.style.display="none";
+  }
+if(razmst==0){
+  znstavki.value="";
+  createst.style.display="none";
+  }
+}
+createst.onclick=function(){
+  razmst=znstavki.value;
+  razmst=Number(razmst);
+  score=Number(score);
+if(score>0)
+  {
+  if(razmst>score)
+    {
+    alert("Вы не можете поставить такое количество денег");
+    znstavki.value="";
+    createst.style.display="none";
+      }
   else
-    return null;
-}
-SetScore(300);
-
-
-var score = get_cookie("total");
-total.innerHTML+=score+'$';
+    {
+    vibor.style.display="inline";
+    stavka.style.display="none";
+    }
+  }
+if(score<0)
+  {
+  if(-razmst<score)
+    {
+      alert("Вы не можете взять больше кредит");
+      znstavki.value="";
+      createst.style.display="none";
+    }
+    else
+      {
+      vibor.style.display="inline";
+      stavka.style.display="none";
+      }
+    }
+  }
    //обнуление элементов
 function nullparam(){
    ucolor=0;
    utype=0;
    uchislo=0;
    selchislo.selectedIndex = 0;
-
-
    chet.style.backgroundColor="white";
- nechet.style.backgroundColor="white";
- red.style.backgroundColor="white";
- black.style.backgroundColor="white";
+   nechet.style.backgroundColor="white";
+   red.style.backgroundColor="white";
+   black.style.backgroundColor="white";
  }
- function hideEl(){
+  function hideEl(){
    // скрвыаем элементы
-   vibor.style.display="inline";
+   vibor.style.display="none";
    colors.style.display="none";
    typech.style.display="none";
    number.style.display="none";
    play.style.display="none";
+   rotaterullet.style.display="none";
+   createst.style.display="none";
+   warning.style.display="none";
 
+ }
+ // показываем рулетку
+ function ShowRullet() {
+   rotaterullet.style.display="inline";
+   roullinterface.style.display="none"
+   document.body.style.backgroundImage = "url('')";
  }
 hideEl();
  nullparam();
+ if(score <= -500){
+ roullinterface.style.display="none";
+ warning.style.display="inline";
+
+
+
+ }
 
 
 selchislo.onfocus=function(){
@@ -101,19 +159,7 @@ uchislo=selchislo.value;
 
   }
 
-function typeofchislo (chislot){
-chislot= chislot % 2;
-  if( chislot == 0 ){
-    return chislot ="четное";
-  }
-  else {
-    return chislot ="нечетное";
-  }
-}
-  function getRandomInt(min, max)
-  {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+
 
 
 //кнопки
@@ -185,6 +231,12 @@ vibor.style.display="inline";
     play.style.display="none";
     nullparam();
 };
+
+total.innerHTML+=score+'$';
+if(score<0){
+total.style.color="red";
+
+}
 //массив чисел рулетки
 var numbers = ['1 красное','2 черное','3 красное','4 черное','5 красное','6 черное'
 ,'7 красное','8 черное','9 красное' , '10 черное','11 черное', '12 черное', '13 красное',
@@ -208,44 +260,81 @@ var ublack=document.getElementById('black');
 
 button.onclick = function() {
 
-alert(uchislo);
 
-  if(uchislo==chislo && uchislo!=0){
-  alert('вы выйграли '+chislo+color);
-score=stavka*2;
+  if(uchislo==chislo && uchislo!=0)
+  {
+
+winorlose.innerHTML="Вы выйграли";
+resrull.innerHTML=chislo+" "+color;
+money.innerHTML="+"+razmst+"$";
+money.style.color="green";
+  ShowRullet();
+if(score>0){score=score-razmst+razmst*36;}
+if(score<0){var vigr=razmst*36; score=score+vigr;}
 SetScore(score);
-location.reload();
+
   }
   if(uchislo!=chislo && uchislo!=0){
 
-  alert('вы не угадали число '+chislo+color);
-score=score-
-location.reload();
+  //alert('вы не угадали число '+chislo+color);
+  winorlose.innerHTML="Вы не угадали число";
+  resrull.innerHTML=chislo+" "+color;
+  money.innerHTML="-"+razmst+"$";
+  money.style.color="red";
+    ShowRullet();
+score=score-razmst;
+SetScore(score);
+
   }
 
 
 
 if(utype==chtype && utype!=0){
-alert('вы выйграли '+chislo+color);
-location.reload();
+  winorlose.innerHTML="Вы выйграли";
+  resrull.innerHTML=chislo+" "+color;
+  money.innerHTML="+"+razmst+"$";
+  money.style.color="green";
+    ShowRullet();
+    if(score>0){score=score-razmst+razmst*2;}
+    if(score<0){var vigr=razmst*2; score=score+vigr;}
+SetScore(score);
+
 
 }
 if(utype!=chtype && utype!=0){
 
-alert('вы не угадали число '+chislo+color);
-location.reload();
+  winorlose.innerHTML="Вы не угадали число";
+  resrull.innerHTML=chislo+" "+color;
+  money.innerHTML="-"+razmst+"$";
+  money.style.color="red";
+    ShowRullet();
+score=score-razmst;
+SetScore(score);
+
+
 }
 
-if(ucolor==color && ucolor !=0){
+if(ucolor==color && ucolor !=0)
+  {
+  winorlose.innerHTML="Вы выйграли";
+  resrull.innerHTML=chislo+" "+color;
+  money.innerHTML="+"+razmst+"$";
+  money.style.color="green";
+    ShowRullet();
+    if(score>0){score=score-razmst+razmst*2;}
+    if(score<0){var vigr=razmst*2; score=score+vigr;}
+  SetScore(score);
+  }
 
-alert('вы выйграли '+chislo+color);
-location.reload();
-}
-
-if(ucolor!=color && ucolor !=0){
-
-alert('вы не угадали число '+chislo+color);
-location.reload();
+if(ucolor!=color && ucolor !=0)
+{
+  winorlose.innerHTML="Вы не угадали число";
+  resrull.innerHTML=chislo+" "+color;
+  money.innerHTML="-"+razmst+"$";
+  money.style.color="red";
+    ShowRullet();
+score=score-razmst;
+SetScore(score);
 }
   };
 });
